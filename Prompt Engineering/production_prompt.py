@@ -165,4 +165,3 @@ my girlfriend left me
 """
 print(llm_ans(fall_back_prompt))
 # OTHER
-# this was the production ready prompt example
