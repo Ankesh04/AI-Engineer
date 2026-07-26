@@ -96,3 +96,86 @@ message_user = {
 
 messages = [message_system, message_user]
 
+response = client.chat.completions.create(model = model, messages = messages, response_format = response_format)
+answer = response.choices[0].message.content
+print(answer)
+raw_json=answer
+
+import json
+job_data = json.loads(raw_json)
+
+job = Job_Des(**job_data)
+
+print(job.minimum_experience)
+print(job.educational_requirements)
+
+# PART 1 Over here
+
+# PART 2 Resume Schema
+
+class MatchResult(BaseModel):
+    score: float
+    details: dict
+
+class Experience(BaseModel):
+    company: str | None = None #it is used as not every resume containes experience so it should not give error based oon that 
+    # also none means it is an optional feature
+    role: str | None = None
+    duration: str | None = None
+    description: str | None = None
+    skills_used: list[str] = []
+
+class Resume(BaseModel):
+    name: str | None = None
+    email: str | None = None
+    phone: str | None = None
+
+    total_experince_years: float | None = None
+
+    skills: list[str] = []
+    experiences: list[Experience] = []
+    education: list[str] = []
+    projects: list[str] = []
+    certifications: list[str] = []
+
+resume_schema = Resume.model_json_schema()
+
+# PART 5 Scorinh and details retreval
+def final_score(job, resume):
+    match_schema = MatchResult.model_json_schema()
+    prompt = f"""
+    You are an HR recruiter.
+
+    Compare the candidate's resume with the job description.
+
+    JOB DESCRIPTION:
+    {job.model_dump_json(indent=2)}
+
+    CANDIDATE RESUME:
+    {resume.model_dump_json(indent=2)}
+    Return JSON matching this schema:
+
+    {match_schema}
+
+    Give me:
+
+    1. Candidate name
+    2. Matching skills
+    3. Missing important skills
+    4. Whether experience requirement is met
+    5. Overall match percentage from 0 to 100
+    6. A short final verdict
+
+    Keep the response concise and easy to read.
+    """
+    message={
+        "role": "user",
+        "content" : prompt
+    }
+    messages=[message]
+    response_format={
+        "type": "json_object"
+    }
+    response = client.chat.completions.create(model=model, messages=messages, response_format=response_format)
+    data = json.loads(response.choices[0].message.content)
+    return MatchResult(**data)
