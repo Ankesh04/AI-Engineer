@@ -179,3 +179,5 @@ def final_score(job, resume):
     response = client.chat.completions.create(model=model, messages=messages, response_format=response_format)
     data = json.loads(response.choices[0].message.content)
     return MatchResult(**data)
+    #here part 5 is completed 
+    
