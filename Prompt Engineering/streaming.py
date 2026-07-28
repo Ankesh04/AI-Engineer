@@ -25,4 +25,9 @@ messages = [message]
 # print(answer)
 # here reponse tooks time to display but dislayed all at once
 
-stream 
+stream = client.chat.completions.create(model=model, messages=messages, stream = True)
+# in this stream many chunks will be created so we have to display it in other way
+for chunk in stream:
+    content = chunk.choices[0].delta.content
+    if content:
+        print(content, end = "", flush=True)
