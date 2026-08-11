@@ -12,8 +12,29 @@ if not my_api_key:
 client = Groq(api_key = my_api_key)
 model = "llama-3.3-70b-versatile"
 
+# RAG 1st ITERRATION
+
+#step1
+# make knowledge base
+knowledge_base={
+    "age": "The age of dazzido is 22",
+    "net worth": "the net worth of dazzido is 10000"
+}
+
+# step2
+# retrive software
+def retrive_info(question):
+    question=question.lower()
+    if "age" in question:
+        return knowledge_base
+    elif "net worth" in question:
+        return knowledge_base
+    else:
+        return None
+
 def ask_llm(question):
-    sys_prompt="answer in one line only"
+    context=retrive_info(question)
+    sys_prompt=f"""answer in one line only. Answer only based on this context, do not halucinate. Context: {context}"""
     system_message={
         "role":"system",
         "content":sys_prompt
@@ -28,5 +49,8 @@ def ask_llm(question):
     return answer
 
 # question="do you know dazzido"
-question="do know the age of dazzido"
+# question="do know the age of dazzido"  answer is available
+question="do know the how old is dazzido"  #asnwer is not available
+
+
 print(ask_llm(question))
