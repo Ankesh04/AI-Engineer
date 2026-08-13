@@ -34,7 +34,7 @@ def retrive_info(question):
 
 def ask_llm(question):
     context=retrive_info(question)
-    sys_prompt=f"""answer in one line only. Answer only based on this context, do not halucinate. Context: {context}"""
+    sys_prompt=f"""Answer in one line only. Answer only based on this context, do not halucinate. Context: {context}"""
     system_message={
         "role":"system",
         "content":sys_prompt
@@ -50,7 +50,8 @@ def ask_llm(question):
 
 # question="do you know dazzido"
 # question="do know the age of dazzido"  answer is available
-question="do know the how old is dazzido"  #asnwer is not available
+question="do know the how old is dazzido"  #asnwer is not available as for the software old is not equal to age
 
 
 print(ask_llm(question))
+
