@@ -18,7 +18,7 @@ model = "llama-3.3-70b-versatile"
 # make knowledge base
 knowledge_base={
     "age": "The age of dazzido is 22",
-    "net worth": "the net worth of dazzido is 10000"
+    "net worth": "the net worth of dazzido is 100000"
 }
 
 # step2
