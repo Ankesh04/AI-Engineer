@@ -162,6 +162,7 @@ def home():
     # # print(resume_text)
     # resume = parse_resume(resume_text)
     # print(resume.model_dump_json(indent=2))
+    # tretyud
 
     return{
     "message" : "AnkAI is Running"
