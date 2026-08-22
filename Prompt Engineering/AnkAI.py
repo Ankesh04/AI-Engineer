@@ -105,7 +105,6 @@ def parse_resume(resume_text):
     internships or projects.
 
     Return ONLY valid JSON matching this schema:
-
     {resume_schema}
 
     Important rules:
